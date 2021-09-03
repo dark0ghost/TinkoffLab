@@ -1,6 +1,11 @@
 package org.dark0ghost.tinkoff_app_test.api_developerslife
 
-import android.media.Image
-import java.util.Date
+import kotlinx.serialization.Serializable
 
-data class DataForRender(val date: Date, val text: String, val image: Image)
+typealias Url = String
+
+@Serializable
+data class DataForRender(val description: String, val gifURL: Url)
+
+@Serializable
+data class ListDataForRender(val result: List<DataForRender>)

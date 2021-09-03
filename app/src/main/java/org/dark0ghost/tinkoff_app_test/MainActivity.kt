@@ -1,18 +1,27 @@
 package org.dark0ghost.tinkoff_app_test
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import org.dark0ghost.tinkoff_app_test.ui.main.MainFragment
+import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.dark0ghost.tinkoff_app_test.api_developerslife.DevelopersLifeApi
+import org.dark0ghost.tinkoff_app_test.menu_details.MainScreen
+
 
 class MainActivity : AppCompatActivity() {
 
+    private val devApi: DevelopersLifeApi = DevelopersLifeApi.Builder().build()
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .commitNow()
+        supportActionBar?.hide()
+        GlobalScope.launch {
+            devApi.getRandomGif()
+        }
+        setContent{
+            MainScreen()
         }
     }
 }

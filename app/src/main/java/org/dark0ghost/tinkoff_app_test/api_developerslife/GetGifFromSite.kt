@@ -1,5 +1,7 @@
 package org.dark0ghost.tinkoff_app_test.api_developerslife
 
-fun interface GetGifFromSite {
-    suspend fun getGif()//: DataForRender
+interface GetGifFromSite {
+    suspend fun getTopGif()
+    suspend fun getHotGif()
+    suspend fun getRandomGif()//: DataForRender
 }
