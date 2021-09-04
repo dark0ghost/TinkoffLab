@@ -7,32 +7,33 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.RequestOptions
-import com.skydoves.landscapist.ShimmerParams
-import com.skydoves.landscapist.glide.GlideImage
-import com.skydoves.landscapist.glide.LocalGlideRequestOptions
+import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.dark0ghost.tinkoff_app_test.R
-import org.dark0ghost.tinkoff_app_test.api_developerslife.DataForRender
 import org.dark0ghost.tinkoff_app_test.api_developerslife.GetGifFromSite
-import org.dark0ghost.tinkoff_app_test.api_developerslife.ListDataForRender
 import org.dark0ghost.tinkoff_app_test.utils.isNetworkAvailable
 
 typealias ComposableFun = @Composable (context: Context, api: GetGifFromSite) -> Unit
 
 @Composable
-fun InetError(frame: ComposableFun) {
+inline fun CheckNetworkAndRender(context: Context,api: GetGifFromSite, renderFn: @Composable  () -> Unit){
+    if(isNetworkAvailable(context = context)) {
+        renderFn()
+    }else{
+        InetError(context, api) @Composable{ contexts: Context, apis: GetGifFromSite -> HotScreen(context = contexts, api = apis) }
+    }
+}
+
+@Composable
+fun InetError(context: Context, api: GetGifFromSite, frame: ComposableFun ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -50,9 +51,9 @@ fun InetError(frame: ComposableFun) {
                 textAlign = TextAlign.Center,
             )
             Button(onClick = {
-                            // frame()
+                          //  frame(context, api)
             },
-            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)) {
+            colors = ButtonDefaults.buttonColors(backgroundColor = White)) {
                 Text(
                     text = "повторить",
                     modifier = Modifier.padding(16.dp)
@@ -64,58 +65,41 @@ fun InetError(frame: ComposableFun) {
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun TopScreen(context: Context, api: GetGifFromSite){
-    if(isNetworkAvailable(context = context)) {
-        /*var res: ListDataForRender //= ListDataForRender(listOf(DataForRender("test","test")))
-        runBlocking {
-                res = api.getRandomGif()
-        }*/
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-        ) {
-
-        }
-    }else{
-        InetError @Composable{ contexts: Context, apis: GetGifFromSite -> TopScreen(context = contexts, api = apis) }
-    }
-}
-
-@Composable
-fun HotScreen(context: Context, api: GetGifFromSite){
-    if(isNetworkAvailable(context = context)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.Center)
-        ) {
-            Text(
-                text = "Music View",
-                textAlign = TextAlign.Center,
-                fontSize = 25.sp
-            )
-        }
-    }else{
-        InetError @Composable{ contexts: Context, apis: GetGifFromSite -> HotScreen(context = contexts, api = apis) }
-    }
-}
-
-
-@Composable
-fun LastScreen(context: Context, api: GetGifFromSite) {
-    if(isNetworkAvailable(context = context)) {
-        var res: DataForRender
-        runBlocking {
-            res = api.getRandomGif()
-        }
+    CheckNetworkAndRender(context = context, api = api) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RenderImage(res)
+            RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
         }
-    }else{
-        InetError @Composable{ contexts: Context, apis: GetGifFromSite -> LastScreen(context = contexts, api = apis) }
+    }
+}
+
+@Composable
+fun HotScreen(context: Context, api: GetGifFromSite){
+    CheckNetworkAndRender(context = context, api = api) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun LastScreen(context: Context, api: GetGifFromSite) {
+    CheckNetworkAndRender(context = context, api = api) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            RenderImage(context, api) { index -> runBlocking { api.getRandomGif(index) } }
+        }
     }
 }

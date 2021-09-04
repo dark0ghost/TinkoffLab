@@ -5,54 +5,55 @@ import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 
 class DevelopersLifeApi(private val basicUrlApi: String,private val client: HttpClient ): GetGifFromSite {
 
-    private val cache: MutableList<DataForRender> = mutableListOf()
-    private var counterRandom: Int = 0
+    private val cacheRandom: MutableList<DataForRender> = mutableListOf()
+    private val cacheTop: MutableList<DataForRender> = mutableListOf()
+    private val cacheHot: MutableList<DataForRender> = mutableListOf()
+
+    private var countPageTop = 0
+    private var countPageHot = 0
+    private var countPageRandom = 0
 
     private fun MutableList<DataForRender>.extend(dataForRenders: List<DataForRender>) {
         dataForRenders.forEach {
-            this@DevelopersLifeApi.cache.add(it)
+            this.add(it)
         }
     }
 
-    private suspend fun getRandomJson(): ListDataForRender {
-        return client.get("$basicUrlApi/latest/0?json=true")
+    private suspend fun getRandomJson(page: Int = 0): ListDataForRender {
+        return client.get("$basicUrlApi/latest/$page?json=true")
     }
 
-    private suspend fun getTopPageJson(page: Int = 0): String =
+    private suspend fun getTopPageJson(page: Int = 0): ListDataForRender =
         client.get("$basicUrlApi/top/$page?json=true")
 
-    private suspend fun getHotPageJson(page: Int = 0): String =
+    private suspend fun getHotPageJson(page: Int = 0): ListDataForRender =
         client.get("$basicUrlApi/hot/$page?json=true")
 
-    override suspend fun getTopGif() {
-        val response: HttpResponse = client.get("$basicUrlApi/latest/0?json=true")
-
-    }
-
-    override suspend fun getHotGif() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getRandomGif(): DataForRender {
-        if (counterRandom == cache.size) {
-            cache.extend(getRandomJson().result)
+    override suspend fun getTopGif(index: Int): DataForRender  {
+        while (index >= cacheTop.size) {
+            cacheTop.extend(getTopPageJson(countPageTop).result)
+            countPageTop++
         }
-        val res = cache[counterRandom]
-        counterRandom++
-        return res
+        return cacheTop[index]
     }
 
-    override fun getBackRandomGif(): DataForRender {
-        if (counterRandom <= 0) {
-            return cache[0]
+    override suspend fun getHotGif(index: Int): DataForRender  {
+        while (index >= cacheHot.size) {
+            cacheHot.extend(getHotPageJson(countPageHot).result)
+            countPageHot++
         }
-        val res = cache[counterRandom]
-        counterRandom--
-        return res
+        return cacheHot[index]
+    }
+
+    override suspend fun getRandomGif(index: Int): DataForRender {
+        while (index >= cacheRandom.size) {
+            cacheRandom.extend(getRandomJson(countPageRandom).result)
+            countPageRandom++
+        }
+        return cacheRandom[index]
     }
 
     data class Builder(

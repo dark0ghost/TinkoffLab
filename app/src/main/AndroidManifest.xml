@@ -14,7 +14,8 @@
         android:theme="@style/Theme.TinkoffAppTest">
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:parentActivityName="org.dark0ghost.tinkoff_app_test.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

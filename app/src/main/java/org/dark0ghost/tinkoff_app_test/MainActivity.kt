@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import io.ktor.client.engine.cio.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ import org.dark0ghost.tinkoff_app_test.menu_details.MainScreen
 
 class MainActivity : AppCompatActivity() {
 
-    private final val devApi: GetGifFromSite = DevelopersLifeApi.Builder().build()
+    private final val devApi: GetGifFromSite = DevelopersLifeApi.Builder().setUrl("https://developerslife.ru").setEngine(CIO).build()
 
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
