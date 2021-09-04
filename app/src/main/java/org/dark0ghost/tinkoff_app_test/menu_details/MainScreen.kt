@@ -3,6 +3,8 @@ package org.dark0ghost.tinkoff_app_test.menu_details
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -27,7 +29,6 @@ fun TabsContent(tabs: List<TabItemMainMenu>, pagerState: PagerState, context: Co
     HorizontalPager(state = pagerState) { page ->
         tabs[page].screen(context, api)
     }
-
 }
 
 @OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
@@ -92,8 +93,11 @@ fun MainScreen(api: GetGifFromSite, context: Context) {
         Column {
             Profile()
             RenderPage(context = context, tabs = tabs, pagerState = pagerState)
+        }
+        LazyColumn{
             TabsContent(tabs = tabs, pagerState = pagerState, context = context, api = api)
         }
+
     }
 
 }

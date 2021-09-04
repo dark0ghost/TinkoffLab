@@ -3,6 +3,7 @@ package org.dark0ghost.tinkoff_app_test.menu_details
 import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -65,7 +66,7 @@ fun InetError(context: Context, api: GetGifFromSite, frame: ComposableFun ) {
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun TopScreen(context: Context, api: GetGifFromSite){
-    CheckNetworkAndRender(context = context, api = api) {
+    /*CheckNetworkAndRender(context = context, api = api) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -73,12 +74,12 @@ fun TopScreen(context: Context, api: GetGifFromSite){
         ) {
             RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
         }
-    }
+    }*/
 }
 
 @Composable
 fun HotScreen(context: Context, api: GetGifFromSite){
-    CheckNetworkAndRender(context = context, api = api) {
+    /*CheckNetworkAndRender(context = context, api = api) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -86,7 +87,7 @@ fun HotScreen(context: Context, api: GetGifFromSite){
         ) {
             RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
         }
-    }
+    }*/
 }
 
 
@@ -94,7 +95,7 @@ fun HotScreen(context: Context, api: GetGifFromSite){
 @Composable
 fun LastScreen(context: Context, api: GetGifFromSite) {
     CheckNetworkAndRender(context = context, api = api) {
-        Column(
+        LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
