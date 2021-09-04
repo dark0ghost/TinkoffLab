@@ -1,6 +1,5 @@
 package org.dark0ghost.tinkoff_app_test.api_developerslife
 
-import androidx.compose.runtime.produceState
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.engine.cio.*
@@ -11,10 +10,11 @@ import io.ktor.client.statement.*
 
 class DevelopersLifeApi(private val basicUrlApi: String,private val client: HttpClient ): GetGifFromSite {
 
-    private suspend fun getRandomJson(): String {
-        val res: ListDataForRender = client.get("$basicUrlApi/latest/0?json=true")
+    private suspend fun getRandomJson(): ListDataForRender {
+        val res = client.get<ListDataForRender>("$basicUrlApi/latest/0?json=true")
         println(res)
-        return  ""
+        println("end")
+        return res
     }
 
     private suspend fun getTopPageJson(page: Int = 0): String =
@@ -32,9 +32,7 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
         TODO("Not yet implemented")
     }
 
-    override suspend fun getRandomGif() {//: DataForRender {
-        println(getRandomJson())
-    }
+    override suspend fun getRandomGif() : ListDataForRender = getRandomJson()
 
 
     data class Builder(

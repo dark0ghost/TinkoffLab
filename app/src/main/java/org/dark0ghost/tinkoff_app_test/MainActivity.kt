@@ -20,9 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
-        GlobalScope.launch {
-            devApi.getRandomGif()
-        }
         val context = this as Context
         setContent{
             MainScreen(devApi, context)
