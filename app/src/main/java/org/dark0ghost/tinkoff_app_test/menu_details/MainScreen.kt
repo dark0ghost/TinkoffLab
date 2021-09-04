@@ -19,26 +19,21 @@ import kotlinx.coroutines.launch
 import org.dark0ghost.tinkoff_app_test.R
 import org.dark0ghost.tinkoff_app_test.api_developerslife.GetGifFromSite
 import org.dark0ghost.tinkoff_app_test.tab_content.TabItemMainMenu
-import org.dark0ghost.tinkoff_app_test.utils.isNetworkAvailable
 
-@Composable
-fun InetError() {
-    Column {
-        Row {
-            Image(
-                painter = painterResource(R.drawable.cloud),
-                contentDescription = "Contact profile picture",
-            )
-        }
-        Text(text = "произошла ошибка при загрузке данных. Проверьте подключение к сети")
-    }
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun RenderPage(context: Context){
-    val pagerState = rememberPagerState(pageCount = 3)
+fun TabsContent(tabs: List<TabItemMainMenu>, pagerState: PagerState, context: Context, api: GetGifFromSite) {
+    HorizontalPager(state = pagerState) { page ->
+        tabs[page].screen(context, api)
+    }
 
+}
+
+@OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
+@Composable
+fun RenderPage(context: Context,tabs: List<TabItemMainMenu>, pagerState: PagerState  ) {
+    val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = White,
@@ -47,37 +42,25 @@ fun RenderPage(context: Context){
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
         }
-
     ) {
-        // Add tabs for all of our pages
+        tabs.forEachIndexed { index, title ->
+           Tab(
+                //icon = { Icon(painter = painterResource(id = title.icon), contentDescription = "") },
+                text = { Text(title.title) },
+                selected = pagerState.currentPage == index,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
 
-        /*Tab(
-            text = { Text("Последние") },
-            selected = pagerState.currentPage == 1
-        )*/
-        Tab(
-            text = { Text("Лучшие") },
-            selected = pagerState.currentPage == 2,
-            onClick = { /* TODO */ },
-        )
-        Tab(
-            text = { Text("Горячие") },
-            selected = pagerState.currentPage == 2,
-            onClick = { /* TODO */ },
-        )
-
-    }
-
-    HorizontalPager(state = pagerState) { page ->
-
-        if(!isNetworkAvailable(context = context)){
-            InetError()
+                }
+            )
         }
     }
 }
 
 @Composable
-fun Profile(){
+fun Profile() {
     Row(modifier = Modifier.padding(all = 8.dp)) {
         Image(
             painter = painterResource(R.drawable.profile),
@@ -92,60 +75,6 @@ fun Profile(){
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
-@androidx.compose.Composable
-fun TabsContent(tabs: List<TabItemMainMenu>, pagerState: PagerState) {
-    HorizontalPager(state = pagerState) { page ->
-        tabs[page].screen()
-    }
-}
-
-
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
-@androidx.compose.Composable
-fun Tabs(tabs: List<TabItemMainMenu>, pagerState: PagerState) {
-    val scope = rememberCoroutineScope()
-
-    TabRow(
-        selectedTabIndex = pagerState.currentPage,
-        backgroundColor = White,
-        contentColor = White,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
-        }) {
-        tabs.forEachIndexed { index, tab ->
-            LeadingIconTab(
-                icon = { Icon(painter = painterResource(id = tab.icon), contentDescription = "") },
-                text = { Text(tab.title) },
-                selected = pagerState.currentPage == index,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
-                },
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun MainScreen() {
-    val tabs: List<TabItemMainMenu> = listOf(
-        TabItemMainMenu.Last,
-        TabItemMainMenu.Top,
-        TabItemMainMenu.Hot
-    )
-    val pagerState = rememberPagerState(pageCount = tabs.size)
-    Scaffold {
-        Column {
-            Tabs(tabs = tabs, pagerState = pagerState)
-            TabsContent(tabs = tabs, pagerState = pagerState)
-        }
-    }
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview
@@ -157,10 +86,13 @@ fun MainScreen(api: GetGifFromSite, context: Context) {
             TabItemMainMenu.Top,
             TabItemMainMenu.Hot
         )
+
         val pagerState = rememberPagerState(pageCount = tabs.size)
+
         Column {
             Profile()
-            MainScreen()
+            RenderPage(context = context, tabs = tabs, pagerState = pagerState)
+            TabsContent(tabs = tabs, pagerState = pagerState, context = context, api = api)
         }
     }
 

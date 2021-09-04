@@ -3,7 +3,9 @@ package org.dark0ghost.tinkoff_app_test.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.compose.Composable
 
+@Composable
 fun isNetworkAvailable(context: Context?): Boolean {
     // api >= 28
     if(context != null) {

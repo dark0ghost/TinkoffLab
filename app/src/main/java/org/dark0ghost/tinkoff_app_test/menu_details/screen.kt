@@ -1,19 +1,112 @@
 package org.dark0ghost.tinkoff_app_test.menu_details
 
-import androidx.compose.Composable
+import android.content.Context
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.material.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import org.dark0ghost.tinkoff_app_test.R
+import org.dark0ghost.tinkoff_app_test.api_developerslife.GetGifFromSite
+import org.dark0ghost.tinkoff_app_test.utils.isNetworkAvailable
 
+typealias ComposableFun = @Composable (context: Context, api: GetGifFromSite) -> Unit
 
 @Composable
-fun TopScreen(){
-
+fun InetError(frame: ComposableFun) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row {
+                Image(
+                    painter = painterResource(R.drawable.cloud),
+                    contentDescription = "Contact profile picture",
+                )
+            }
+            Text(
+                text = "произошла ошибка при загрузке данных. Проверьте подключение к сети",
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+            )
+            Button(onClick = {
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)) {
+                Text(
+                    text = "повторить",
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
 }
 
 @Composable
-fun HotScreen(){
-
+fun TopScreen(context: Context, api: GetGifFromSite){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Text(
+            text = "Music View",
+            fontWeight = FontWeight.Bold,
+            color = White,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp
+        )
+    }
 }
 
 @Composable
-fun LastScreen(){
+fun HotScreen(context: Context, api: GetGifFromSite){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Text(
+            text = "Music View",
+            fontWeight = FontWeight.Bold,
+            color = White,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center,
+            fontSize = 25.sp
+        )
+    }
+}
 
+
+@Composable
+fun LastScreen(context: Context, api: GetGifFromSite) {
+    println(1)
+    if(isNetworkAvailable(context = context)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.Center)
+        ) {
+            Text(
+                text = "Music View",
+                fontWeight = FontWeight.Bold,
+                color = White,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                textAlign = TextAlign.Center,
+                fontSize = 25.sp
+            )
+        }
+    }else{
+        InetError @Composable{ contexts: Context, apis: GetGifFromSite -> LastScreen(context = contexts, api = apis) }
+    }
 }
