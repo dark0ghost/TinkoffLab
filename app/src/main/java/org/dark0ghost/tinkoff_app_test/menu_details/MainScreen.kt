@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -27,13 +26,13 @@ import org.dark0ghost.tinkoff_app_test.tab_content.TabItemMainMenu
 @Composable
 fun TabsContent(tabs: List<TabItemMainMenu>, pagerState: PagerState, context: Context, api: GetGifFromSite) {
     HorizontalPager(state = pagerState) { page ->
-        tabs[page].screen(context, api)
+            tabs[page].screen(context, api)
     }
 }
 
 @OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
 @Composable
-fun RenderPage(context: Context,tabs: List<TabItemMainMenu>, pagerState: PagerState  ) {
+fun RenderPage(tabs: List<TabItemMainMenu>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -53,7 +52,6 @@ fun RenderPage(context: Context,tabs: List<TabItemMainMenu>, pagerState: PagerSt
                     scope.launch {
                         pagerState.animateScrollToPage(index)
                     }
-
                 }
             )
         }
@@ -92,9 +90,7 @@ fun MainScreen(api: GetGifFromSite, context: Context) {
 
         Column {
             Profile()
-            RenderPage(context = context, tabs = tabs, pagerState = pagerState)
-        }
-        LazyColumn{
+            RenderPage(tabs = tabs, pagerState = pagerState)
             TabsContent(tabs = tabs, pagerState = pagerState, context = context, api = api)
         }
 

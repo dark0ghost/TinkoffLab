@@ -66,28 +66,32 @@ fun InetError(context: Context, api: GetGifFromSite, frame: ComposableFun ) {
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun TopScreen(context: Context, api: GetGifFromSite){
-    /*CheckNetworkAndRender(context = context, api = api) {
-        Column(
+    CheckNetworkAndRender(context = context, api = api) {
+        LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
+            item {
+                RenderImage(context, api) { index -> runBlocking { api.getTopGif(index) } }
+            }
         }
-    }*/
+    }
 }
 
 @Composable
 fun HotScreen(context: Context, api: GetGifFromSite){
-    /*CheckNetworkAndRender(context = context, api = api) {
-        Column(
+    CheckNetworkAndRender(context = context, api = api) {
+        LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
+            item {
+                RenderImage(context, api) { index -> runBlocking { api.getHotGif(index) } }
+            }
         }
-    }*/
+    }
 }
 
 
@@ -100,7 +104,9 @@ fun LastScreen(context: Context, api: GetGifFromSite) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RenderImage(context, api) { index -> runBlocking { api.getRandomGif(index) } }
+            item {
+                RenderImage(context, api) { index -> runBlocking { api.getRandomGif(index) } }
+            }
         }
     }
 }

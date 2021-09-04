@@ -22,19 +22,24 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
         }
     }
 
-    private suspend fun getRandomJson(page: Int = 0): ListDataForRender {
-        return client.get("$basicUrlApi/latest/$page?json=true")
-    }
+    private suspend fun getRandomJson(page: Int = 0): ListDataForRender =
+        client.get("$basicUrlApi/latest/$page?json=true")
+
 
     private suspend fun getTopPageJson(page: Int = 0): ListDataForRender =
         client.get("$basicUrlApi/top/$page?json=true")
+
 
     private suspend fun getHotPageJson(page: Int = 0): ListDataForRender =
         client.get("$basicUrlApi/hot/$page?json=true")
 
     override suspend fun getTopGif(index: Int): DataForRender  {
         while (index >= cacheTop.size) {
-            cacheTop.extend(getTopPageJson(countPageTop).result)
+            val check = getTopPageJson(countPageTop).result
+            if (check.isEmpty()){
+                return DataForRender("0", "0")
+            }
+            cacheTop.extend(check)
             countPageTop++
         }
         return cacheTop[index]
@@ -42,7 +47,11 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
 
     override suspend fun getHotGif(index: Int): DataForRender  {
         while (index >= cacheHot.size) {
-            cacheHot.extend(getHotPageJson(countPageHot).result)
+            val check = getHotPageJson(countPageHot).result
+            if (check.isEmpty()){
+                return DataForRender("0", "0")
+            }
+            cacheHot.extend(check)
             countPageHot++
         }
         return cacheHot[index]
@@ -50,7 +59,11 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
 
     override suspend fun getRandomGif(index: Int): DataForRender {
         while (index >= cacheRandom.size) {
-            cacheRandom.extend(getRandomJson(countPageRandom).result)
+            val check = getRandomJson(countPageRandom).result
+            if (check.isEmpty()){
+                return DataForRender("0", "0")
+            }
+            cacheRandom.extend(check)
             countPageRandom++
         }
         return cacheRandom[index]
