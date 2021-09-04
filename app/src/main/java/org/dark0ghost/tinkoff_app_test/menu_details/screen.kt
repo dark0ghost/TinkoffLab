@@ -7,6 +7,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +20,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.skydoves.landscapist.ShimmerParams
 import com.skydoves.landscapist.glide.GlideImage
+import com.skydoves.landscapist.glide.LocalGlideRequestOptions
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.dark0ghost.tinkoff_app_test.R
@@ -47,6 +49,7 @@ fun InetError(frame: ComposableFun) {
                 textAlign = TextAlign.Center,
             )
             Button(onClick = {
+                            // frame()
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.White)) {
                 Text(
@@ -112,8 +115,8 @@ fun LastScreen(context: Context, api: GetGifFromSite) {
                 GlideImage(
                     imageModel = "https://static.devli.ru/public/images/gifs/201306/b0177891-b012-4a53-9751-672facbd1c6d.gif",
                     failure = {
-                        InetError {
-                                contexts: Context, apis: GetGifFromSite -> LastScreen(context = contexts, api = apis)
+                        InetError { contexts: Context, apis: GetGifFromSite ->
+                            LastScreen(context = contexts, api = apis)
                         }
                     },
                     shimmerParams = ShimmerParams(
@@ -125,6 +128,7 @@ fun LastScreen(context: Context, api: GetGifFromSite) {
                         .override(256, 256)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .centerCrop(),
+                    alignment = Alignment.Center,
                 )
         }
     }else{
