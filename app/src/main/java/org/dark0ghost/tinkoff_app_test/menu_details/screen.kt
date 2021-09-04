@@ -24,6 +24,7 @@ import com.skydoves.landscapist.glide.LocalGlideRequestOptions
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.dark0ghost.tinkoff_app_test.R
+import org.dark0ghost.tinkoff_app_test.api_developerslife.DataForRender
 import org.dark0ghost.tinkoff_app_test.api_developerslife.GetGifFromSite
 import org.dark0ghost.tinkoff_app_test.api_developerslife.ListDataForRender
 import org.dark0ghost.tinkoff_app_test.utils.isNetworkAvailable
@@ -103,7 +104,7 @@ fun HotScreen(context: Context, api: GetGifFromSite){
 @Composable
 fun LastScreen(context: Context, api: GetGifFromSite) {
     if(isNetworkAvailable(context = context)) {
-        var res: ListDataForRender //= ListDataForRender(listOf(DataForRender("test","test")))
+        var res: DataForRender
         runBlocking {
             res = api.getRandomGif()
         }
@@ -112,24 +113,7 @@ fun LastScreen(context: Context, api: GetGifFromSite) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-                GlideImage(
-                    imageModel = "https://static.devli.ru/public/images/gifs/201306/b0177891-b012-4a53-9751-672facbd1c6d.gif",
-                    failure = {
-                        InetError { contexts: Context, apis: GetGifFromSite ->
-                            LastScreen(context = contexts, api = apis)
-                        }
-                    },
-                    shimmerParams = ShimmerParams(
-                        baseColor = Color.LightGray,
-                        highlightColor = White,
-                        durationMillis = 500
-                    ),
-                    requestOptions = RequestOptions()
-                        .override(256, 256)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop(),
-                    alignment = Alignment.Center,
-                )
+            RenderImage(res)
         }
     }else{
         InetError @Composable{ contexts: Context, apis: GetGifFromSite -> LastScreen(context = contexts, api = apis) }
