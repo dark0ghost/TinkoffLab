@@ -52,12 +52,17 @@ fun RenderPage(){
         // Add tabs for all of our pages
 
         Tab(
-            text = { Text("12") },
+            text = { Text("Последние") },
             selected = pagerState.currentPage == 1,
             onClick = { /* TODO */ },
         )
         Tab(
-            text = { Text("13") },
+            text = { Text("Лучшие") },
+            selected = pagerState.currentPage == 2,
+            onClick = { /* TODO */ },
+        )
+        Tab(
+            text = { Text("Горячие") },
             selected = pagerState.currentPage == 2,
             onClick = { /* TODO */ },
         )
