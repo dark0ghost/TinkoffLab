@@ -11,14 +11,14 @@
 ## interface 
 
 ### main
-[![](https://github.com/dark0ghost/TinkoffLab/blob/main/static/main.png)]
+<img src="https://github.com/dark0ghost/TinkoffLab/blob/main/static/main.png">
 
 ### section hot
-[![](https://github.com/dark0ghost/TinkoffLab/blob/main/static/hot.png)]
+<img src="https://github.com/dark0ghost/TinkoffLab/blob/main/static/hot.png">
 
 ### section best
-[![](https://github.com/dark0ghost/TinkoffLab/blob/main/static/best.png)]
+<img src="https://github.com/dark0ghost/TinkoffLab/blob/main/static/best.png">
 
 ### interface internat-error 
-[![](https://github.com/dark0ghost/TinkoffLab/blob/main/static//error_internet_connection.png)]
+<img src="https://github.com/dark0ghost/TinkoffLab/blob/main/static//error_internet_connection.png">
 
