@@ -26,7 +26,7 @@ import org.dark0ghost.tinkoff_app_test.tab_content.TabItemMainMenu
 @Composable
 fun TabsContent(tabs: List<TabItemMainMenu>, pagerState: PagerState, context: Context, api: GetGifFromSite) {
     HorizontalPager(state = pagerState) { page ->
-            tabs[page].screen(context, api)
+        tabs[page].screen(context, api)
     }
 }
 
@@ -44,7 +44,7 @@ fun RenderPage(tabs: List<TabItemMainMenu>, pagerState: PagerState) {
         }
     ) {
         tabs.forEachIndexed { index, title ->
-           Tab(
+            Tab(
                 //icon = { Icon(painter = painterResource(id = title.icon), contentDescription = "") },
                 text = { Text(title.title) },
                 selected = pagerState.currentPage == index,
@@ -95,5 +95,4 @@ fun MainScreen(api: GetGifFromSite, context: Context) {
         }
 
     }
-
 }

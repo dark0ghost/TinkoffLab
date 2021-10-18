@@ -49,7 +49,7 @@ fun RenderImage(context: Context, api: GetGifFromSite, dataForRenderFn: (index: 
     var count by remember { mutableStateOf(0) }
 
     val dataForRender: DataForRender = dataForRenderFn(count)
-    if(dataForRender.gifURL != "0" && dataForRender.description != "0") {
+    if (dataForRender.gifURL != "0" && dataForRender.description != "0") {
         GlideImage(
             imageModel = dataForRender.gifURL.replace("http", "https"),
             failure = {
@@ -110,7 +110,7 @@ fun RenderImage(context: Context, api: GetGifFromSite, dataForRenderFn: (index: 
                 )
             }
         }
-    }else{
+    } else {
         ErrorLoad()
     }
 }

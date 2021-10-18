@@ -6,7 +6,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 
-class DevelopersLifeApi(private val basicUrlApi: String,private val client: HttpClient ): GetGifFromSite {
+class DevelopersLifeApi(private val basicUrlApi: String,private val client: HttpClient): GetGifFromSite {
 
     private val cacheRandom: MutableList<DataForRender> = mutableListOf()
     private val cacheTop: MutableList<DataForRender> = mutableListOf()
@@ -33,10 +33,10 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
     private suspend fun getHotPageJson(page: Int = 0): ListDataForRender =
         client.get("$basicUrlApi/hot/$page?json=true")
 
-    override suspend fun getTopGif(index: Int): DataForRender  {
+    override suspend fun getTopGif(index: Int): DataForRender {
         while (index >= cacheTop.size) {
             val check = getTopPageJson(countPageTop).result
-            if (check.isEmpty()){
+            if (check.isEmpty()) {
                 return DataForRender("0", "0")
             }
             cacheTop.extend(check)
@@ -45,10 +45,10 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
         return cacheTop[index]
     }
 
-    override suspend fun getHotGif(index: Int): DataForRender  {
+    override suspend fun getHotGif(index: Int): DataForRender {
         while (index >= cacheHot.size) {
             val check = getHotPageJson(countPageHot).result
-            if (check.isEmpty()){
+            if (check.isEmpty()) {
                 return DataForRender("0", "0")
             }
             cacheHot.extend(check)
@@ -60,7 +60,7 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
     override suspend fun getRandomGif(index: Int): DataForRender {
         while (index >= cacheRandom.size) {
             val check = getRandomJson(countPageRandom).result
-            if (check.isEmpty()){
+            if (check.isEmpty()) {
                 return DataForRender("0", "0")
             }
             cacheRandom.extend(check)

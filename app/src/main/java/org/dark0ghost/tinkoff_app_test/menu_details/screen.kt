@@ -25,47 +25,54 @@ import org.dark0ghost.tinkoff_app_test.utils.isNetworkAvailable
 typealias ComposableFun = @Composable (context: Context, api: GetGifFromSite) -> Unit
 
 @Composable
-inline fun CheckNetworkAndRender(context: Context,api: GetGifFromSite, renderFn: @Composable  () -> Unit){
-    if(isNetworkAvailable(context = context)) {
+inline fun CheckNetworkAndRender(context: Context,api: GetGifFromSite, renderFn: @Composable  () -> Unit) {
+    if (isNetworkAvailable(context = context)) {
         renderFn()
-    }else{
-        InetError(context, api) @Composable{ contexts: Context, apis: GetGifFromSite -> HotScreen(context = contexts, api = apis) }
+    } else {
+        InetError(context, api) @Composable { contexts: Context, apis: GetGifFromSite ->
+            HotScreen(
+                context = contexts,
+                api = apis
+            )
+        }
     }
 }
 
 @Composable
 fun InetError(context: Context, api: GetGifFromSite, frame: ComposableFun ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Row {
-                Image(
-                    painter = painterResource(R.drawable.cloud),
-                    contentDescription = "Contact profile picture",
-                )
-            }
-            Text(
-                text = "произошла ошибка при загрузке данных. Проверьте подключение к сети",
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center,
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row {
+            Image(
+                painter = painterResource(R.drawable.cloud),
+                contentDescription = "Contact profile picture",
             )
-            Button(onClick = {
-                          //  frame(context, api)
-            },
-            colors = ButtonDefaults.buttonColors(backgroundColor = White)) {
-                Text(
-                    text = "повторить",
-                    modifier = Modifier.padding(16.dp)
-                )
-            }
         }
+        Text(
+            text = "произошла ошибка при загрузке данных. Проверьте подключение к сети",
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+        )
+        Button(
+            onClick = {
+                //  frame(context, api)
+            },
+            colors = ButtonDefaults.buttonColors(backgroundColor = White)
+        ) {
+            Text(
+                text = "повторить",
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+    }
 }
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
-fun TopScreen(context: Context, api: GetGifFromSite){
+fun TopScreen(context: Context, api: GetGifFromSite) {
     CheckNetworkAndRender(context = context, api = api) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -80,7 +87,7 @@ fun TopScreen(context: Context, api: GetGifFromSite){
 }
 
 @Composable
-fun HotScreen(context: Context, api: GetGifFromSite){
+fun HotScreen(context: Context, api: GetGifFromSite) {
     CheckNetworkAndRender(context = context, api = api) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
