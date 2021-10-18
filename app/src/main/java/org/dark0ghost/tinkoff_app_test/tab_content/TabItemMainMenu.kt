@@ -10,7 +10,15 @@ import org.dark0ghost.tinkoff_app_test.menu_details.TopScreen
 
 
 sealed class TabItemMainMenu(var title: String, var screen: ComposableFun) {
-     object Last : TabItemMainMenu("Последние", @Composable {context: Context, api: GetGifFromSite -> LastScreen(context, api) })
-     object Top : TabItemMainMenu("Лучшие", @Composable {context: Context, api: GetGifFromSite ->  TopScreen(context, api) })
-     object Hot : TabItemMainMenu("Горячие", @Composable {context: Context, api: GetGifFromSite ->  HotScreen(context, api) })
+     object Last : TabItemMainMenu(
+          "Последние",
+          @Composable { context: Context, api: GetGifFromSite -> LastScreen(context, api) })
+
+     object Top : TabItemMainMenu(
+          "Лучшие",
+          @Composable { context: Context, api: GetGifFromSite -> TopScreen(context, api) })
+
+     object Hot : TabItemMainMenu(
+          "Горячие",
+          @Composable { context: Context, api: GetGifFromSite -> HotScreen(context, api) })
 }

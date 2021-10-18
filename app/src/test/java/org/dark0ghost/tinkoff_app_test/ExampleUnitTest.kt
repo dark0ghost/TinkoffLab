@@ -17,9 +17,10 @@ class ApiTest {
 
     @Test
     fun testSerializableRandom(): Unit = runBlocking {
-        val devApi: GetGifFromSite = DevelopersLifeApi.Builder().setUrl("https://developerslife.ru").setEngine(
-            CIO
-        ).build()
+        val devApi: GetGifFromSite =
+            DevelopersLifeApi.Builder().setUrl("https://developerslife.ru").setEngine(
+                CIO
+            ).build()
 
         val res = devApi.getRandomGif(1)
         assert(res.gifURL != "0")
@@ -27,9 +28,10 @@ class ApiTest {
 
     @Test
     fun testSerializableTop(): Unit = runBlocking {
-        val devApi: GetGifFromSite = DevelopersLifeApi.Builder().setUrl("https://developerslife.ru").setEngine(
-            CIO
-        ).build()
+        val devApi: GetGifFromSite =
+            DevelopersLifeApi.Builder().setUrl("https://developerslife.ru").setEngine(
+                CIO
+            ).build()
 
         val res = devApi.getTopGif(1)
         assert(res.gifURL != "0")
