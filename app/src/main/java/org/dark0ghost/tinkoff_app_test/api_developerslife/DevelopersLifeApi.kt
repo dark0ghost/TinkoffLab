@@ -18,7 +18,7 @@ class DevelopersLifeApi(private val basicUrlApi: String,private val client: Http
 
     private fun MutableList<DataForRender>.extend(dataForRenders: List<DataForRender>) {
         dataForRenders.forEach {
-            this.add(it)
+            add(it)
         }
     }
 
